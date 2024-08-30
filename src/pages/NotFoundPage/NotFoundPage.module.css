@@ -1,0 +1,15 @@
+.container {
+    padding: 20px;
+    color: #101828;
+    text-align: center;
+  }
+  
+  .link {
+    color: #FFC531;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .link:hover {
+    color: #FFC531;
+  }

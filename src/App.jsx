@@ -14,6 +14,7 @@ export default function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/1" element={<NotFoundPage />} />
     
       </Routes>
     </Layout>

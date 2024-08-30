@@ -1,0 +1,43 @@
+.container {
+    position: relative;
+    display: flex;
+    justify-content:center;
+    flex-direction: row;
+    align-items: center;
+    padding: 24px 64px;
+    background-color: #f2f4f7;
+  }
+
+.nav {
+    display: flex;
+    gap: 24px;
+  }
+
+.navLink {
+    position: absolute;
+    padding: 0;
+    left: 64px;
+    line-height: 16px;
+    height: 16px;
+}
+
+.link {
+    color: #101828;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.link:hover {
+    color: #FFC531; 
+}
+
+.active {
+    color: #FFC531; 
+}
+
+.icon {
+    width: 136px;
+    height: 16px;
+}

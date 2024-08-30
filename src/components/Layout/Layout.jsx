@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import css from './Layout.module.css';
-// import Loader from '../Loader/Loader';
+import Loader from '../Loader/Loader';
 import Navigation from '../Navigation/Navigation';
 
 export default function Layout({ children }) {
@@ -9,10 +9,7 @@ export default function Layout({ children }) {
       <header className={css.header}>
         <Navigation />
       </header>
-      {/* <Suspense fallback={<Loader />}>{children}</Suspense> */}
-      <Suspense fallback={<div>loading...</div>}>
-        {children}
-      </Suspense>
+      <Suspense fallback={<Loader />}>{children}</Suspense>
     </div>
   );
 }
