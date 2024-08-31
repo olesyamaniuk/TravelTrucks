@@ -35,27 +35,10 @@
     font-weight: 600;
 
 }
-.button {
-    min-width: 100px;
-    height: 40px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: -0.5%;
-    text-align: center;
-    padding: 10px 32px;
-    border-radius: 200px;
+
+.button:hover {
     background: #FFC531;
-    /* transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1); */
-    border: none;
-    color: #FFFFFF;
-    display: inline-block;
-    align-self: flex-start;
-  }
-  
-  .button:hover {
-    background: #FFC531;
-  }
+}
 
 
   

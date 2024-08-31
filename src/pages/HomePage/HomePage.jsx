@@ -1,7 +1,14 @@
 import css from './HomePage.module.css';
-
+import Button from '../../components/Button/button'; 
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
+  const navigate = useNavigate(); 
+
+  const handleButtonClick = () => {
+    navigate('/catalog'); 
+  };
+
   return (
     <section className={css.section}>
       <div className={css.container}>
@@ -9,7 +16,7 @@ export default function HomePage() {
         <p className={css.text}>
           You can find everything you want in our catalog
         </p>
-        <button className={css.button}>View Now</button>
+        <Button text="View Now" type="button" className={css.button} onClick={handleButtonClick} />
       </div>
     </section>
   );
