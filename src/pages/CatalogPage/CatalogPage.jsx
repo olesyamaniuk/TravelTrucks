@@ -1,15 +1,15 @@
 import css from "./CatalogPage.module.css";
 import Filter from "../../components/Filter/Filter";
 import CarsList from "../../components/CarsList/CarsList";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { GetCars } from "../../../api";
-// import LoadMore from "../../components/LoadMore/LoadMore";
+import Loader from "../../components/Loader/Loader";
 
 export default function Catalog() {
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   const [filters, setFilters] = useState({
     equipment: [
@@ -29,21 +29,22 @@ export default function Catalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const carsPerPage = 4;
 
-  useEffect(() => {
-    async function fetchCars(page) {
-      try {
-        setError(false);
-        setLoading(true);
-        const data = await GetCars(page);
-        setCars((prevCars) => [...prevCars, ...data.items]);
-      } catch (error) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
+  const fetchCars = useCallback(async (page) => {
+    try {
+      setError(null);
+      setLoading(true);
+      const data = await GetCars(page);
+      setCars((prevCars) => [...prevCars, ...data.items]);
+    } catch (err) {
+      setError("Error fetching data");
+    } finally {
+      setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
     fetchCars(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchCars]);
 
   useEffect(() => {
     const applyFilters = () => {
@@ -86,13 +87,13 @@ export default function Catalog() {
     applyFilters();
   }, [filters, cars]);
 
-  const handleFilterChange = (category, index) => {
+  const handleFilterChange = useCallback((category, index) => {
     setFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
       newFilters[category][index].active = !newFilters[category][index].active;
       return newFilters;
     });
-  };
+  }, []);
 
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
@@ -100,48 +101,25 @@ export default function Catalog() {
 
   const totalPages = Math.ceil(filteredCars.length / carsPerPage);
 
-  const handleNextPage = () => {
+  const handleNextPage = useCallback(() => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPage((prevPage) => prevPage + 1);
     }
-  };
-
-  useEffect(() => {
-    async function fetchMoreCars() {
-      if (currentPage > 1) {
-        try {
-          setError(false);
-          setLoading(true);
-          const data = await GetCars(currentPage);
-          setCars((prevCars) => [...prevCars, ...data.items]);
-          setFilteredCars((prevFilteredCars) => [
-            ...prevFilteredCars,
-            ...data.items,
-          ]);
-        } catch (error) {
-          setError(true);
-        } finally {
-          setLoading(false);
-        }
-      }
-    }
-    fetchMoreCars();
-  }, [currentPage]);
+  }, [currentPage, totalPages]);
 
   return (
-    <div className={css.catalogContainer}>
-
-      {error && <b>Error fetching data</b>}
+    <div className={css.container}>
+      {error && <b>{error}</b>}
       <Filter filters={filters} onFilterChange={handleFilterChange} />
       <div className={css.list}>
         <CarsList cars={currentCars} />
-        <div className={css.pagination}>
+        <div>
           <button
             className={css.buttonLoadMore}
             onClick={handleNextPage}
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || loading}
           >
-            Load more
+            {loading ? <Loader /> : "Load more"}
           </button>
         </div>
       </div>

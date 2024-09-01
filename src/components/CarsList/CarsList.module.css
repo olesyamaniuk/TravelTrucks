@@ -61,18 +61,24 @@
     gap: 12px;
   }
 
+
+
   .like {
     background-color: transparent;
     width: 24px;
     height: 21px;
     padding: 0;
     border: none;
-  }
-  .like:hover,
-  .like:active,
-  .like:focus {
+    cursor: pointer; 
+}
+
+.like:hover,
+.like:active,
+.like:focus {
     border-color: transparent;
-  }
+    outline: none; 
+}
+
 
 
 
@@ -173,8 +179,8 @@
   .liked {
     fill: #FFC531;
   }
-  .icon {
+  /* .icon {
     width: 20px;
     height: 20px;
     margin-right: 8px;
-  }
+  } */

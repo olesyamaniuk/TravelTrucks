@@ -2,7 +2,6 @@ import { treadmill } from 'ldrs'
 
 treadmill.register()
 
-// Default values shown
 
 import css from './Loader.module.css';
 

@@ -1,0 +1,61 @@
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 60%;
+  background: #f2f4f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #FFC531;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.details {
+  flex: 1;
+}
+.autorContainer {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.rating {
+  font-size: 18px;
+  color: #ffc531;
+  margin: 0;
+  display: flex;
+}
+.author {
+  color: #101828;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  margin: 0;
+}
+.comment {
+  color: #475467;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  width: 631px;
+}
+.box {
+  display: flex;
+  gap: 40px;
+  margin-top: 44px;
+}
