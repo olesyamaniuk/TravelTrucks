@@ -1,24 +1,9 @@
-import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 import Button from "../Button/button";
+import { formValidation } from "../../Validation/formValidation";
 import css from "./form.module.css";
-
-// Validation schema
-const validationSchema = Yup.object({
-  name: Yup.string()
-    .min(3, "Min 3 characters")
-    .max(50, "Max 50 characters")
-    .required("Required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Required"),
-  date: Yup.date()
-    .nullable(),
-  comment: Yup.string(),
-});
 
 export default function BookingForm() {
   const handleSubmit = (values, { resetForm }) => {
@@ -40,7 +25,7 @@ export default function BookingForm() {
           date: "",
           comment: "",
         }}
-        validationSchema={validationSchema}
+        validationSchema={formValidation}
         onSubmit={handleSubmit}
       >
         <Form className={css.bookingForm}>

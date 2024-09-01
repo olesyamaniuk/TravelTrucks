@@ -1,15 +1,25 @@
-
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { IoStar } from "react-icons/io5";
-import { IoMapOutline } from "react-icons/io5";
-import { FaRegHeart } from "react-icons/fa";
-import iconMap from "../iconMap/iconMap.jsx";
-import css from "./CarsList.module.css";
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { IoStar } from 'react-icons/io5';
+import { IoMapOutline } from 'react-icons/io5';
+import { FaRegHeart } from 'react-icons/fa';
+import iconMap from '../iconMap/iconMap.jsx';
+import css from './CarsList.module.css';
 
 export default function CarList({ cars }) {
   const location = useLocation();
   const [likedCars, setLikedCars] = useState({});
+
+  useEffect(() => {
+    const savedLikedCars = localStorage.getItem('likedCars');
+    if (savedLikedCars) {
+      setLikedCars(JSON.parse(savedLikedCars));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('likedCars', JSON.stringify(likedCars));
+  }, [likedCars]);
 
   const handleLikeClick = (carId) => {
     setLikedCars((prevLikedCars) => ({
@@ -84,4 +94,6 @@ export default function CarList({ cars }) {
     </div>
   );
 }
+
+
 

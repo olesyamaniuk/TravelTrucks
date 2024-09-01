@@ -1,7 +1,5 @@
 import { treadmill } from 'ldrs'
-
 treadmill.register()
-
 
 import css from './Loader.module.css';
 

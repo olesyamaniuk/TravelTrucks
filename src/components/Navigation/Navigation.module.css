@@ -6,12 +6,12 @@
     align-items: center;
     padding: 24px 64px;
     background-color: #f2f4f7;
-  }
+}
 
 .nav {
     display: flex;
     gap: 24px;
-  }
+}
 
 .navLink {
     position: absolute;

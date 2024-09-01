@@ -2,10 +2,10 @@ import css from "./CatalogPage.module.css";
 import Filter from "../../components/Filter/Filter";
 import CarsList from "../../components/CarsList/CarsList";
 import { useEffect, useState, useCallback } from "react";
-import { GetCars } from "../../../api";
+import { getCars } from "../../../api";
 import Loader from "../../components/Loader/Loader";
 
-export default function Catalog() {
+export default function CatalogPage() {
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export default function Catalog() {
     try {
       setError(null);
       setLoading(true);
-      const data = await GetCars(page);
+      const data = await getCars(page);
       setCars((prevCars) => [...prevCars, ...data.items]);
     } catch (err) {
       setError("Error fetching data");
