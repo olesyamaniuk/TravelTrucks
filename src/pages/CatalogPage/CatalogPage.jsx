@@ -22,9 +22,9 @@
 //       { label: "Bathroom", active: false },
 //     ],
 //     type: [
-//       { label: "Van", active: false },
-//       { label: "Fully Integrated", active: false },
-//       { label: "Alcove", active: false },
+//       { label: "panelTruck", active: false },
+//       { label: "fullyIntegrated", active: false },
+//       { label: "alcove", active: false },
 //     ],
 //   });
 
@@ -93,7 +93,7 @@
 //   const handleFilterChange = useCallback((category, index) => {
 //     setFilters((prevFilters) => {
 //       const newFilters = { ...prevFilters };
-//       newFilters[category][index].active = !newFilters[category][index].active;
+//       newFilters[category][index].active = !newFilters[category][index].active; // Перемикаємо активність фільтра
 //       return newFilters;
 //     });
 //   }, []);
@@ -139,7 +139,6 @@
 //   );
 // }
 
-
 import css from "./CatalogPage.module.css";
 import Filter from "../../components/Filter/Filter";
 import CarsList from "../../components/CarsList/CarsList";
@@ -163,9 +162,9 @@ export default function CatalogPage() {
       { label: "Bathroom", active: false },
     ],
     type: [
-      { label: "panelTruck", active: false },
-      { label: "fullyIntegrated", active: false },
-      { label: "alcove", active: false },
+      { label: "Van", active: false },
+      { label: "Fully Integrated", active: false },
+      { label: "Alcove", active: false },
     ],
   });
 
@@ -189,6 +188,12 @@ export default function CatalogPage() {
     fetchCars(currentPage);
   }, [currentPage, fetchCars]);
 
+  const filterMapping = {
+    Van: "panelTruck",
+    "Fully Integrated": "fullyIntegrated",
+    Alcove: "alcove",
+  };
+
   const applyFilters = () => {
     const activeEquipmentFilters = filters.equipment
       .filter((filter) => filter.active)
@@ -196,7 +201,7 @@ export default function CatalogPage() {
 
     const activeTypeFilters = filters.type
       .filter((filter) => filter.active)
-      .map((filter) => filter.label);
+      .map((filter) => filterMapping[filter.label]);
 
     const filtered = cars.filter((car) => {
       const matchesEquipment = activeEquipmentFilters.every((filter) => {
@@ -218,7 +223,6 @@ export default function CatalogPage() {
 
       const matchesType = activeTypeFilters.length === 0 || activeTypeFilters.includes(car.form);
 
-      // Додано перевірку на локацію
       const matchesLocation = car.location.toLowerCase().includes(location.toLowerCase());
 
       return matchesEquipment && matchesType && matchesLocation;
@@ -234,7 +238,7 @@ export default function CatalogPage() {
   const handleFilterChange = useCallback((category, index) => {
     setFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
-      newFilters[category][index].active = !newFilters[category][index].active; // Перемикаємо активність фільтра
+      newFilters[category][index].active = !newFilters[category][index].active;
       return newFilters;
     });
   }, []);
@@ -279,3 +283,4 @@ export default function CatalogPage() {
     </div>
   );
 }
+
