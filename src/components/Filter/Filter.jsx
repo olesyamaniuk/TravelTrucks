@@ -101,9 +101,9 @@ export default function Filter({ filters, onFilterChange, location, onLocationCh
               className={`${css.filter} ${filter.active ? css.active : ""}`} // Активний клас для вибраного фільтра
               onClick={() => onFilterChange("type", index)}
             >
-              {filter.label === "Van" && <BsGrid1X2 className={css.icon} />}
-              {filter.label === "Fully Integrated" && <IoGridOutline className={css.icon} />}
-              {filter.label === "Alcove" && <BsGrid3X3Gap className={css.icon} />}
+              {filter.label === "panelTruck" && <BsGrid1X2 className={css.icon} />}
+              {filter.label === "fullyIntegrated" && <IoGridOutline className={css.icon} />}
+              {filter.label === "alcove" && <BsGrid3X3Gap className={css.icon} />}
               {filter.label}
             </button>
           ))}

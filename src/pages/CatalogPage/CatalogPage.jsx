@@ -163,9 +163,9 @@ export default function CatalogPage() {
       { label: "Bathroom", active: false },
     ],
     type: [
-      { label: "Van", active: false },
-      { label: "Fully Integrated", active: false },
-      { label: "Alcove", active: false },
+      { label: "panelTruck", active: false },
+      { label: "fullyIntegrated", active: false },
+      { label: "alcove", active: false },
     ],
   });
 
