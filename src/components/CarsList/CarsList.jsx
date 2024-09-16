@@ -32,8 +32,8 @@ export default function CarList({ cars }) {
     <div>
       {cars.length > 0 && (
         <ul className={css.list}>
-          {cars.map((car) => (
-            <li className={css.item} key={car.id}>
+          {cars.map((car, index) => (
+            <li className={css.item} key={`${car.id}-${index}`}>
               <img
                 src={car.gallery?.[0]?.thumb}
                 alt={car.name}
@@ -94,6 +94,5 @@ export default function CarList({ cars }) {
     </div>
   );
 }
-
 
 
