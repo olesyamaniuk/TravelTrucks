@@ -1,4 +1,4 @@
-.section {
+/* .section {
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
@@ -40,4 +40,62 @@
 }
 
 
+ */
+
+
+ .section {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    position: relative;
+    
+}
+
+
+
+.text {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #6C717B;
+}
+
+.inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    display: flex;
+    width: 360px;
+    height: 56px;
+    padding: 18px 18px 18px 40px;
+    gap: 10px;
+    border-radius: 12px;
+    background: #f7f7f7;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    font-size: 16px;
+    color: #000; 
+    transition: border-color 0.3s ease;
+}
+
+.input:hover {
+    border-color: #FFC531; 
+}
+
+.input:focus {
+    border-color: #FFC531;
+    outline: none;
+}
+
+.mapIcon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+}
 

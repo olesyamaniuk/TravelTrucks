@@ -1,3 +1,4 @@
+
 // import css from "./CatalogPage.module.css";
 // import Filter from "../../components/Filter/Filter";
 // import CarsList from "../../components/CarsList/CarsList";
@@ -10,6 +11,7 @@
 //   const [filteredCars, setFilteredCars] = useState([]);
 //   const [loading, setLoading] = useState(false);
 //   const [error, setError] = useState(null);
+//   const [location, setLocation] = useState(""); // Додано стан для локації
 
 //   const [filters, setFilters] = useState({
 //     equipment: [
@@ -46,46 +48,47 @@
 //     fetchCars(currentPage);
 //   }, [currentPage, fetchCars]);
 
-//   useEffect(() => {
-//     const applyFilters = () => {
-//       const activeEquipmentFilters = filters.equipment
-//         .filter((filter) => filter.active)
-//         .map((filter) => filter.label);
+//   const applyFilters = () => {
+//     const activeEquipmentFilters = filters.equipment
+//       .filter((filter) => filter.active)
+//       .map((filter) => filter.label);
 
-//       const activeTypeFilters = filters.type
-//         .filter((filter) => filter.active)
-//         .map((filter) => filter.label);
+//     const activeTypeFilters = filters.type
+//       .filter((filter) => filter.active)
+//       .map((filter) => filter.label);
 
-//       const filtered = cars.filter((car) => {
-//         const matchesEquipment = activeEquipmentFilters.every((filter) => {
-//           switch (filter) {
-//             case "AC":
-//               return car.AC;
-//             case "Automatic":
-//               return car.transmission === "automatic";
-//             case "Kitchen":
-//               return car.kitchen;
-//             case "TV":
-//               return car.TV;
-//             case "Bathroom":
-//               return car.bathroom;
-//             default:
-//               return true;
-//           }
-//         });
-
-//         const matchesType =
-//           activeTypeFilters.length === 0 ||
-//           activeTypeFilters.includes(car.form);
-
-//         return matchesEquipment && matchesType;
+//     const filtered = cars.filter((car) => {
+//       const matchesEquipment = activeEquipmentFilters.every((filter) => {
+//         switch (filter) {
+//           case "AC":
+//             return car.AC;
+//           case "Automatic":
+//             return car.transmission === "automatic";
+//           case "Kitchen":
+//             return car.kitchen;
+//           case "TV":
+//             return car.TV;
+//           case "Bathroom":
+//             return car.bathroom;
+//           default:
+//             return true;
+//         }
 //       });
 
-//       setFilteredCars(filtered);
-//     };
+//       const matchesType = activeTypeFilters.length === 0 || activeTypeFilters.includes(car.form);
 
+//       // Додано перевірку на локацію
+//       const matchesLocation = car.location.toLowerCase().includes(location.toLowerCase());
+
+//       return matchesEquipment && matchesType && matchesLocation;
+//     });
+
+//     setFilteredCars(filtered);
+//   };
+
+//   useEffect(() => {
 //     applyFilters();
-//   }, [filters, cars]);
+//   }, [filters, cars, location]);
 
 //   const handleFilterChange = useCallback((category, index) => {
 //     setFilters((prevFilters) => {
@@ -94,6 +97,10 @@
 //       return newFilters;
 //     });
 //   }, []);
+
+//   const handleLocationChange = (newLocation) => {
+//     setLocation(newLocation);
+//   };
 
 //   const indexOfLastCar = currentPage * carsPerPage;
 //   const indexOfFirstCar = indexOfLastCar - carsPerPage;
@@ -110,7 +117,12 @@
 //   return (
 //     <div className={css.container}>
 //       {error && <b>{error}</b>}
-//       <Filter filters={filters} onFilterChange={handleFilterChange} />
+//       <Filter
+//         filters={filters}
+//         onFilterChange={handleFilterChange}
+//         location={location} // Передаємо локацію в компонент Filter
+//         onLocationChange={handleLocationChange} // Функція для оновлення локації
+//       />
 //       <div className={css.list}>
 //         <CarsList cars={currentCars} />
 //         <div>
@@ -222,7 +234,7 @@ export default function CatalogPage() {
   const handleFilterChange = useCallback((category, index) => {
     setFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
-      newFilters[category][index].active = !newFilters[category][index].active;
+      newFilters[category][index].active = !newFilters[category][index].active; // Перемикаємо активність фільтра
       return newFilters;
     });
   }, []);
