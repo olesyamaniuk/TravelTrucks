@@ -22,9 +22,9 @@
 //       { label: "Bathroom", active: false },
 //     ],
 //     type: [
-//       { label: "panelTruck", active: false },
-//       { label: "fullyIntegrated", active: false },
-//       { label: "alcove", active: false },
+//       { label: "Van", active: false },
+//       { label: "Fully Integrated", active: false },
+//       { label: "Alcove", active: false },
 //     ],
 //   });
 
@@ -48,6 +48,12 @@
 //     fetchCars(currentPage);
 //   }, [currentPage, fetchCars]);
 
+//   const filterMapping = {
+//     Van: "panelTruck",
+//     "Fully Integrated": "fullyIntegrated",
+//     Alcove: "alcove",
+//   };
+
 //   const applyFilters = () => {
 //     const activeEquipmentFilters = filters.equipment
 //       .filter((filter) => filter.active)
@@ -55,7 +61,7 @@
 
 //     const activeTypeFilters = filters.type
 //       .filter((filter) => filter.active)
-//       .map((filter) => filter.label);
+//       .map((filter) => filterMapping[filter.label]);
 
 //     const filtered = cars.filter((car) => {
 //       const matchesEquipment = activeEquipmentFilters.every((filter) => {
@@ -77,7 +83,6 @@
 
 //       const matchesType = activeTypeFilters.length === 0 || activeTypeFilters.includes(car.form);
 
-//       // Додано перевірку на локацію
 //       const matchesLocation = car.location.toLowerCase().includes(location.toLowerCase());
 
 //       return matchesEquipment && matchesType && matchesLocation;
@@ -93,7 +98,7 @@
 //   const handleFilterChange = useCallback((category, index) => {
 //     setFilters((prevFilters) => {
 //       const newFilters = { ...prevFilters };
-//       newFilters[category][index].active = !newFilters[category][index].active; // Перемикаємо активність фільтра
+//       newFilters[category][index].active = !newFilters[category][index].active;
 //       return newFilters;
 //     });
 //   }, []);
@@ -170,6 +175,7 @@ export default function CatalogPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const carsPerPage = 4;
+  const [totalCars, setTotalCars] = useState(0); // Додано стан для загальної кількості автомобілів
 
   const fetchCars = useCallback(async (page) => {
     try {
@@ -177,6 +183,7 @@ export default function CatalogPage() {
       setLoading(true);
       const data = await getCars(page);
       setCars((prevCars) => [...prevCars, ...data.items]);
+      setTotalCars(data.total); // Передаємо загальну кількість автомобілів
     } catch (err) {
       setError("Error fetching data");
     } finally {
@@ -251,7 +258,7 @@ export default function CatalogPage() {
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
   const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
 
-  const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+  const totalPages = Math.ceil(totalCars / carsPerPage);
 
   const handleNextPage = useCallback(() => {
     if (currentPage < totalPages) {
@@ -274,13 +281,12 @@ export default function CatalogPage() {
           <button
             className={css.buttonLoadMore}
             onClick={handleNextPage}
-            disabled={currentPage === totalPages || loading}
+            disabled={currentPage >= totalPages || loading}
           >
-            {loading ? <Loader /> : "Load more"}
+            {loading ? <Loader /> : currentPage >= totalPages ? "No more" : "Load more"}
           </button>
         </div>
       </div>
     </div>
   );
 }
-
