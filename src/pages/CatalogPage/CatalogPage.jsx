@@ -182,7 +182,7 @@ export default function CatalogPage() {
       setError(null);
       setLoading(true);
       const data = await getCars(page);
-      setCars((prevCars) => [...prevCars, ...data.items]);
+      setCars((prevCars) => [...prevCars, ...data.items]); // Додаємо нові автомобілі до вже завантажених
       setTotalCars(data.total); // Передаємо загальну кількість автомобілів
     } catch (err) {
       setError("Error fetching data");
