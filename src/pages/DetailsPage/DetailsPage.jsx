@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, NavLink, Outlet } from "react-router-dom";
+import { useParams, NavLink, Outlet, useLocation } from "react-router-dom";
 import { IoStar, IoMapOutline } from "react-icons/io5";
 import { getCarById } from "../../../api";
 import css from "./DetailsPage.module.css";
@@ -8,6 +8,7 @@ import Loader from "../../components/Loader/Loader";
 export default function DetailsPage() {
   const { carsId } = useParams();
   const [car, setCar] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     async function fetchCar() {
@@ -21,7 +22,9 @@ export default function DetailsPage() {
     fetchCar();
   }, [carsId]);
 
-  const classLink = ({ isActive }) => (isActive ? css.active : css.link);
+  const classLink = (isActive) => (isActive ? css.active : css.link);
+
+  const isFeaturesActive = location.pathname === `/catalog/${carsId}` || location.pathname.endsWith('/features');
 
   return (
     <div className={css.container}>
@@ -29,10 +32,10 @@ export default function DetailsPage() {
         <div className={css.detail}>
           <h2 className={css.name}>{car.name}</h2>
           <div className={css.info}>
-              <p className={css.rating}>
-                <IoStar className={css.star} />
-                {car.rating} ({car.reviews.length} Reviews)
-              </p>
+            <p className={css.rating}>
+              <IoStar className={css.star} />
+              {car.rating} ({car.reviews.length} Reviews)
+            </p>
             <p className={css.location}>
               <IoMapOutline className={css.mapIcon} />
               {car.location}
@@ -62,12 +65,12 @@ export default function DetailsPage() {
       <div className={css.add}>
         <ul className={css.addList}>
           <li className={css.addItem}>
-            <NavLink to="features" className={classLink}>
+            <NavLink to="features" className={({ isActive }) => classLink(isActive || isFeaturesActive)}>
               Features
             </NavLink>
           </li>
           <li className={css.addItem}>
-            <NavLink to="reviews" className={classLink}>
+            <NavLink to="reviews" className={({ isActive }) => classLink(isActive)}>
               Reviews
             </NavLink>
           </li>

@@ -1,4 +1,3 @@
-
 import css from "./CatalogPage.module.css";
 import Filter from "../../components/Filter/Filter";
 import CarsList from "../../components/CarsList/CarsList";
