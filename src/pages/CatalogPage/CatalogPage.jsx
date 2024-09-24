@@ -12,7 +12,7 @@ const filterMapping = {
 };
 
 export default function CatalogPage() {
-  const [cars, setCars] = useState([]);
+  const [allCars, setAllCars] = useState([]);  
   const [filteredCars, setFilteredCars] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -34,22 +34,17 @@ export default function CatalogPage() {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalCars, setTotalCars] = useState(0);
-  const carsPerPage = 4;
+  const carsPerPage = 4;  
 
-  const fetchCars = useCallback(async (page) => {
+  const fetchAllCars = useCallback(async () => {
     try {
       setError(null);
       setLoading(true);
-      // const data = await getCars(page, carsPerPage);
-      const data = await getCars(page, data.total);
+
+      const data = await getCars(1, 100);  
 
       if (data && data.items && Array.isArray(data.items)) {
-        setCars((prevCars) => {
-          const newCars = data.items.filter(item => !prevCars.some(prevCar => prevCar.id === item.id));
-          return [...prevCars, ...newCars]; 
-        });
-        setTotalCars(data.total); 
+        setAllCars(data.items);  
       } else {
         setError("Data format error: 'items' is not an array");
       }
@@ -61,10 +56,10 @@ export default function CatalogPage() {
   }, []);
 
   useEffect(() => {
-    fetchCars(currentPage);
-  }, [currentPage, fetchCars]);
+    fetchAllCars();
+  }, [fetchAllCars]);
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     const activeEquipmentFilters = filters.equipment
       .filter((filter) => filter.active)
       .map((filter) => filter.label);
@@ -73,7 +68,7 @@ export default function CatalogPage() {
       .filter((filter) => filter.active)
       .map((filter) => filterMapping[filter.label]);
 
-    const filtered = cars.filter((car) => {
+    const filtered = allCars.filter((car) => {
       const matchesEquipment = activeEquipmentFilters.every((filter) => {
         switch (filter) {
           case "AC":
@@ -92,18 +87,18 @@ export default function CatalogPage() {
       });
 
       const matchesType = activeTypeFilters.length === 0 || activeTypeFilters.includes(car.form);
-
       const matchesLocation = car.location.toLowerCase().includes(location.toLowerCase());
 
       return matchesEquipment && matchesType && matchesLocation;
     });
 
-    setFilteredCars(filtered);
-  };
+    setFilteredCars(filtered); 
+    setCurrentPage(1);  
+  }, [allCars, filters, location]);
 
   useEffect(() => {
     applyFilters();
-  }, [filters, cars, location]);
+  }, [filters, location, allCars, applyFilters]);
 
   const handleFilterChange = useCallback((category, index) => {
     setFilters((prevFilters) => {
@@ -117,11 +112,13 @@ export default function CatalogPage() {
     setLocation(newLocation);
   };
 
-  const handleNextPage = useCallback(() => {
-    if (currentPage * carsPerPage < totalCars) {
+  const displayedCars = filteredCars.slice(0, currentPage * carsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage * carsPerPage < filteredCars.length) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
-  }, [currentPage, totalCars]);
+  };
 
   return (
     <div className={css.container}>
@@ -133,19 +130,17 @@ export default function CatalogPage() {
         onLocationChange={handleLocationChange}
       />
       <div className={css.list}>
-        <CarsList cars={filteredCars} />
+        <CarsList cars={displayedCars} />
         <div>
           <button
             className={css.buttonLoadMore}
             onClick={handleNextPage}
-            disabled={currentPage * carsPerPage >= totalCars || loading}
+            disabled={currentPage * carsPerPage >= filteredCars.length || loading}
           >
-            {loading ? <Loader /> : currentPage * carsPerPage >= totalCars ? "No more" : "Load more"}
+            {loading ? <Loader /> : currentPage * carsPerPage >= filteredCars.length ? "No more" : "Load more"}
           </button>
         </div>
       </div>
     </div>
   );
 }
-
-
