@@ -41,7 +41,8 @@ export default function CatalogPage() {
     try {
       setError(null);
       setLoading(true);
-      const data = await getCars(page, carsPerPage);
+      // const data = await getCars(page, carsPerPage);
+      const data = await getCars(page, data.total);
 
       if (data && data.items && Array.isArray(data.items)) {
         setCars((prevCars) => {
@@ -146,3 +147,5 @@ export default function CatalogPage() {
     </div>
   );
 }
+
+
