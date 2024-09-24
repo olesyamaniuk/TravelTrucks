@@ -12,7 +12,7 @@ const filterMapping = {
 };
 
 export default function CatalogPage() {
-  const [allCars, setAllCars] = useState([]);  
+  const [allCars, setAllCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -34,17 +34,17 @@ export default function CatalogPage() {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const carsPerPage = 4;  
+  const carsPerPage = 4;
 
   const fetchAllCars = useCallback(async () => {
     try {
       setError(null);
       setLoading(true);
 
-      const data = await getCars(1, 100);  
+      const data = await getCars(1, 100);  // Завантажуємо всі машини
 
       if (data && data.items && Array.isArray(data.items)) {
-        setAllCars(data.items);  
+        setAllCars(data.items);
       } else {
         setError("Data format error: 'items' is not an array");
       }
@@ -92,8 +92,8 @@ export default function CatalogPage() {
       return matchesEquipment && matchesType && matchesLocation;
     });
 
-    setFilteredCars(filtered); 
-    setCurrentPage(1);  
+    setFilteredCars(filtered);
+    setCurrentPage(1); 
   }, [allCars, filters, location]);
 
   useEffect(() => {
@@ -103,7 +103,16 @@ export default function CatalogPage() {
   const handleFilterChange = useCallback((category, index) => {
     setFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
-      newFilters[category][index].active = !newFilters[category][index].active;
+
+      if (category === "type") {
+        newFilters.type = newFilters.type.map((item, i) => ({
+          ...item,
+          active: i === index,
+        }));
+      } else {
+        newFilters[category][index].active = !newFilters[category][index].active;
+      }
+
       return newFilters;
     });
   }, []);
